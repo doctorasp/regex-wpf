@@ -10,21 +10,24 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="263*"/>
             <ColumnDefinition Width="46*"/>
-            <ColumnDefinition Width="753*"/>
+            <ColumnDefinition Width="266*"/>
+            <ColumnDefinition Width="487*"/>
         </Grid.ColumnDefinitions>
         <Rectangle Fill="#FF4D4DE2" HorizontalAlignment="Left" Height="679" Stroke="Black" VerticalAlignment="Top" Width="187" Margin="0,0,0,-119"/>
         <Label Content="RegexPower" HorizontalAlignment="Left" Margin="36,23,0,0" VerticalAlignment="Top" Foreground="#FFE4E4E4" Height="38" Width="111" FontSize="18"/>
         <TextBox HorizontalAlignment="Left" Name="matchBox" Height="30" Margin="22,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" TextChanged="TextBox_TextChanged"/>
-        <RichTextBox HorizontalAlignment="Left" AcceptsReturn="True" Name="rtb" Height="679" Margin="187,0,0,-119" VerticalAlignment="Top" Width="875" Grid.ColumnSpan="3">
+        <RichTextBox HorizontalAlignment="Left" AcceptsReturn="True" Name="rtb" Height="623" Margin="187,56,0,-119" VerticalAlignment="Top" Width="875" Grid.ColumnSpan="4" Background="WhiteSmoke">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Label Content="All matches" HorizontalAlignment="Left" Margin="22,92,0,0" VerticalAlignment="Top" Foreground="#FFE4E4E4" Height="38" Width="111" FontSize="14"/>
+        <Label Content="All matches:" HorizontalAlignment="Left" Margin="22,92,0,0" VerticalAlignment="Top" Foreground="#FFE4E4E4" Height="38" Width="111" FontSize="14"/>
         <Button Content="Load File" HorizontalAlignment="Left" Margin="22,374,0,0" VerticalAlignment="Top" Width="142" Click="Button_Click" Height="32"/>
         <Button Content="Valid Email" HorizontalAlignment="Left" Margin="22,427,0,0" VerticalAlignment="Top" Width="142" Click="Button_Click_1" Height="32"/>
+        <TextBox HorizontalAlignment="Left" Name="ownPatter" Height="33" Margin="28,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="715" TextChanged="TextBox_TextChanged_1" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Label Content="Regular Expression:" HorizontalAlignment="Left" Margin="198,10,0,0" VerticalAlignment="Top" Foreground="#FFE4E4E4" Height="38" Width="111" FontSize="14" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

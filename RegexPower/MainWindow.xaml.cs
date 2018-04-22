@@ -24,6 +24,7 @@ namespace RegexPower
     public partial class MainWindow : Window
     {
         PatternRepository _pattern;
+        bool check = true;
         public MainWindow()
         {
             _pattern = new PatternRepository();
@@ -102,5 +103,68 @@ namespace RegexPower
             return new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text.Trim();
         }
 
+        private static bool IsValidRegex(string pattern)
+        {
+            if (string.IsNullOrEmpty(pattern)) return false;
+
+            try
+            {
+                Regex.Match("", pattern);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            string pattern = this.ownPatter.Text;
+            if (IsValidRegex(pattern))
+            {
+                rtb.SelectAll();
+                rtb.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
+                rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+
+
+                Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                TextPointer position = rtb.Document.ContentStart;
+                List<TextRange> ranges = new List<TextRange>();
+                while (position != null)
+                {
+                    if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
+                    {
+                        string text = position.GetTextInRun(LogicalDirection.Forward);
+                        var matchs = reg.Matches(text);
+
+                        foreach (Match match in matchs)
+                        {
+
+                            TextPointer start = position.GetPositionAtOffset(match.Index);
+                            TextPointer end = start.GetPositionAtOffset(match.Length);
+
+                            TextRange textrange = new TextRange(start, end);
+                            ranges.Add(textrange);
+                        }
+                    }
+                    position = position.GetNextContextPosition(LogicalDirection.Forward);
+                }
+
+
+                foreach (TextRange range in ranges)
+                {
+                    range.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Red));
+                    range.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+                }
+            }
+            else
+            {
+                this.rtb.SelectAll();
+                this.rtb.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
+                this.rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+            }
+        }
     }
 }
