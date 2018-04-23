@@ -34,40 +34,8 @@ namespace RegexPower
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            rtb.SelectAll();
-            rtb.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
-            rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
-
-
-            Regex reg = new Regex(this.matchBox.Text, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            TextPointer position = rtb.Document.ContentStart;
-            List<TextRange> ranges = new List<TextRange>();
-            while (position != null)
-            {
-                if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
-                {
-                    string text = position.GetTextInRun(LogicalDirection.Forward);
-                    var matchs = reg.Matches(text);
-
-                    foreach (Match match in matchs)
-                    {
-
-                        TextPointer start = position.GetPositionAtOffset(match.Index);
-                        TextPointer end = start.GetPositionAtOffset(this.matchBox.Text.Length);
-
-                        TextRange textrange = new TextRange(start, end);
-                        ranges.Add(textrange);
-                    }
-                }
-                position = position.GetNextContextPosition(LogicalDirection.Forward);
-            }
-
-
-            foreach (TextRange range in ranges)
-            {
-                range.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Red));
-                range.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
-            }
+            string pattern = this.matchBox.Text;
+            SearchHightlighted(pattern);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -124,46 +92,52 @@ namespace RegexPower
             string pattern = this.ownPatter.Text;
             if (IsValidRegex(pattern))
             {
-                rtb.SelectAll();
-                rtb.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
-                rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
-
-
-                Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                TextPointer position = rtb.Document.ContentStart;
-                List<TextRange> ranges = new List<TextRange>();
-                while (position != null)
-                {
-                    if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
-                    {
-                        string text = position.GetTextInRun(LogicalDirection.Forward);
-                        var matchs = reg.Matches(text);
-
-                        foreach (Match match in matchs)
-                        {
-
-                            TextPointer start = position.GetPositionAtOffset(match.Index);
-                            TextPointer end = start.GetPositionAtOffset(match.Length);
-
-                            TextRange textrange = new TextRange(start, end);
-                            ranges.Add(textrange);
-                        }
-                    }
-                    position = position.GetNextContextPosition(LogicalDirection.Forward);
-                }
-
-
-                foreach (TextRange range in ranges)
-                {
-                    range.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Red));
-                    range.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
-                }
+                SearchHightlighted(pattern);
             }
             else
             {
                 this.rtb.SelectAll();
                 this.rtb.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
                 this.rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+            }
+        }
+
+
+        public void SearchHightlighted(string pattern)
+        {
+            rtb.SelectAll();
+            rtb.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
+            rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+
+
+            Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            TextPointer position = rtb.Document.ContentStart;
+            List<TextRange> ranges = new List<TextRange>();
+            while (position != null)
+            {
+                if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
+                {
+                    string text = position.GetTextInRun(LogicalDirection.Forward);
+                    var matchs = reg.Matches(text);
+
+                    foreach (Match match in matchs)
+                    {
+
+                        TextPointer start = position.GetPositionAtOffset(match.Index);
+                        TextPointer end = start.GetPositionAtOffset(match.Length);
+
+                        TextRange textrange = new TextRange(start, end);
+                        ranges.Add(textrange);
+                    }
+                }
+                position = position.GetNextContextPosition(LogicalDirection.Forward);
+            }
+
+
+            foreach (TextRange range in ranges)
+            {
+                range.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Red));
+                range.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
             }
         }
     }
